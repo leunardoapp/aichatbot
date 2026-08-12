@@ -98,16 +98,37 @@ class AutomationStepController extends Controller
     {
         $data = self::setCache($request);
 
-        $post = $this->scheduledPostService->store($data);
+        try {
+            $post = $this->scheduledPostService->store($data);
 
-        if ($request->has('share_test')) {
-            UserPostJob::dispatchSync($post);
+            if ($request->has('share_test')) {
+                UserPostJob::dispatchSync($post);
+                
+                return redirect()->route('dashboard.user.automation.list')->with([
+                    'message' => 'Scheduled post created and published successfully!',
+                    'type'    => 'success',
+                ]);
+            }
+
+            return redirect()->route('dashboard.user.automation.list')->with([
+                'message' => 'Scheduled post created successfully',
+                'type'    => 'success',
+            ]);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Illuminate\Support\Facades\Log::error('storeScheduledPost failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'user_id' => auth()->id(),
+                'platform_id' => $data['platform_id'] ?? null,
+            ]);
+            
+            // Show detailed error message to user
+            return redirect()->back()->withInput()->with([
+                'message' => 'Failed to create/publish post: ' . $e->getMessage() . '. Please check your platform connection and credentials.',
+                'type'    => 'error',
+            ]);
         }
-
-        return redirect()->route('dashboard.user.automation.list')->with([
-            'message' => 'Scheduled post created successfully',
-            'type'    => 'success',
-        ]);
     }
 
     public static function setCache(Request $request, bool $hasCache = true)

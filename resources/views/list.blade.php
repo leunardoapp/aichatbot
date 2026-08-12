@@ -39,6 +39,12 @@
 
 @section('content')
     <div class="py-10">
+        @if(session('message'))
+            <div class="mb-4 p-4 rounded-lg {{ session('type') == 'error' ? 'bg-red-100 border border-red-400 text-red-700' : 'bg-green-100 border border-green-400 text-green-700' }}">
+                {{ session('message') }}
+            </div>
+        @endif
+        
         <p>
             {{ __('Current System Time:') }} <strong>{{ now()->format('H:i:s') }}</strong>
         </p>
