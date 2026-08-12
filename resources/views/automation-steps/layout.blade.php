@@ -74,6 +74,12 @@
 
 @section('content')
     <div class="py-10">
+        @if(session('message'))
+            <div class="mb-4 p-4 rounded-lg {{ session('type') == 'error' ? 'bg-red-100 border border-red-400 text-red-700' : 'bg-green-100 border border-green-400 text-green-700' }}">
+                {{ session('message') }}
+            </div>
+        @endif
+        
         <x-card class="mx-auto w-full lg:w-5/12">
             @yield('yield_content')
         </x-card>
@@ -194,5 +200,12 @@
             });
             textarea.value = '';
         }
+    </script>
+    
+    <script>
+        // Display session messages using toastr
+        @if(session('message'))
+            toastr.{{ session('type') == 'error' ? 'error' : 'success' }}('{{ session('message') }}');
+        @endif
     </script>
 @endpush

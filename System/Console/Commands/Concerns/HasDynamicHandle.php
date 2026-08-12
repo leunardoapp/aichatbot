@@ -18,7 +18,20 @@ trait HasDynamicHandle
         foreach ($posts as $post) {
             try {
                 dispatch(new UserPostJob($post));
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
+                // Log the error with detailed information
+                \Illuminate\Support\Facades\Log::error('Scheduled post failed in command', [
+                    'post_id' => $post->id,
+                    'platform' => $post->platform,
+                    'user_id' => $post->user_id,
+                    'repeat_period' => $repeat_period,
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+                
+                // Update post status to indicate failure (optional - you may want to add a failed_at column)
+                // $post->update(['failed_at' => now()]);
+                
                 continue;
             }
             $post->update(['command_running' => true]);

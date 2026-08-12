@@ -10,6 +10,9 @@
                 <h2 class="mb-7 flex flex-wrap items-center justify-between gap-3">
                     {{ __('Twitter/X') }}
                     @if ($platformX)
+                        @if ($platformX->expires_at && $platformX->expires_at->isPast())
+                            <span class="ms-auto text-red-600 font-semibold">{{ __('Expired - Please Reconnect') }}</span>
+                        @endif
                         <x-button
                             class="ms-auto"
                             variant="secondary"
@@ -113,6 +116,9 @@
                 <h2 class="mb-7 flex flex-wrap items-center justify-between gap-3">
                     {{ __('LinkedIn') }}
                     @if ($platformLinkedin)
+                        @if ($platformLinkedin->expires_at && $platformLinkedin->expires_at->isPast())
+                            <span class="ms-auto text-red-600 font-semibold">{{ __('Expired - Please Reconnect') }}</span>
+                        @endif
                         <x-button
                             class="ms-auto"
                             variant="secondary"
@@ -170,6 +176,9 @@
                 <h2 class="mb-7 flex flex-wrap items-center justify-between gap-3">
                     {{ __('Instagram') }}
                     @if ($platformInstagram)
+                        @if ($platformInstagram->expires_at && $platformInstagram->expires_at->isPast())
+                            <span class="ms-auto text-red-600 font-semibold">{{ __('Expired - Please Reconnect') }}</span>
+                        @endif
                         <x-button
                             class="ms-auto"
                             variant="secondary"

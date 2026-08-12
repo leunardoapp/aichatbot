@@ -1,0 +1,76 @@
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+dist/
+build/
+*.class
+*.so
+*.dll
+*.exe
+*.a
+*.out
+
+# Dependencies
+node_modules/
+vendor/
+composer.lock
+*.lock
+.env
+.env.local
+.env.*
+.env.backup
+.env.dev
+.env.development
+.env.prod
+.env.production
+.env.test
+.env.testing
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+*.backup
+
+# Editors and IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Testing
+.phpunit.result.cache
+.phpspec/
+tests/_output/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*:*
+
+# Laravel specific (if applicable)
+bootstrap/cache/
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+public/storage
+
+# Original rules preserved
+*.log
