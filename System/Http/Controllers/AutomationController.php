@@ -20,6 +20,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use OpenAI\Laravel\Facades\OpenAI;
 use Throwable;
 
@@ -206,7 +207,13 @@ class AutomationController extends Controller
             $schedule->last_run_date = now()->addDays(-1);
             $schedule->save();
         } catch (Throwable $th) {
-            // TODO: Log the error..
+            Log::error('AutomationController lastStep failed', [
+                'error' => $th->getMessage(),
+                'trace' => $th->getTraceAsString(),
+                'platform_id' => $platform_id,
+                'user_id' => auth()->user()->id,
+            ]);
+            throw new \Exception('Failed to save scheduled post: ' . $th->getMessage() . '. Please try again.');
         }
     }
 

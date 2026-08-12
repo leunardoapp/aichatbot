@@ -98,6 +98,23 @@
                         </td>
 
                         <td class="whitespace-nowrap">
+                            @php
+                                $platformId = $entry?->platform;
+                                $automationPlatform = null;
+                                if ($platformId == 1) {
+                                    $automationPlatform = \App\Extensions\AISocialMedia\System\Services\AutomationService::find(1);
+                                } elseif ($platformId == 2) {
+                                    $automationPlatform = \App\Extensions\AISocialMedia\System\Services\AutomationService::find(2);
+                                } else {
+                                    $automationPlatform = \App\Extensions\AISocialMedia\System\Services\AutomationService::find(3);
+                                }
+                                $isExpired = $automationPlatform && $automationPlatform->setting && $automationPlatform->setting->expires_at && $automationPlatform->setting->expires_at->isPast();
+                            @endphp
+                            
+                            @if ($isExpired)
+                                <span class="text-red-600 font-semibold text-xs block mb-2">{{ __('Credentials Expired - Reconnect Required') }}</span>
+                            @endif
+                            
                             @if (env('APP_STATUS') == 'Demo')
                                 <x-button
                                     class="size-9"
@@ -132,6 +149,7 @@
                                     variant="ghost-shadow"
                                     size="none"
                                     title="{{ __('Edit') }}"
+                                    {{ $isExpired ? 'disabled' : '' }}
                                 >
                                     <x-tabler-pencil class="size-4" />
                                 </x-button>
